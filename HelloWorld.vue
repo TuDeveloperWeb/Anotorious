@@ -1,22 +1,22 @@
 <template>
-  <div class="container">
-    <h1 class="text-center">ANOTORIOUS</h1>
-    <button @click="rectangulo()">Fe</button>
-    <button @click="circulo()">Cristo</button>
+  <div>
 
-    <div id="osd-container" class="flex box">
-      <div id="openseadragon1"></div>
-    </div>
+      <b-button class="btn btn-success" @click="showModal">Abrir Modal</b-button>
 
+      <b-modal v-model="showModalState" title="Mi Modal" size="lg">
+      <!-- Contenido del modal aquí -->
+        <div id="osd-container" class="flex box">
+          <div id="openseadragon1">
+          </div>
+        </div>
 
+       </b-modal>
 
-    <!-- <div class="container-img">
-      <div id="openseadragon1" style="width: 400px; height: 500px;"></div>
-    </div> -->
   </div>
 </template>
 
 <script>
+
 import OpenSeadragon from 'openseadragon';
 import * as Annotorious from '@recogito/annotorious-openseadragon';
 import '@recogito/annotorious-openseadragon/dist/annotorious.min.css';
@@ -24,12 +24,17 @@ import '@recogito/annotorious-openseadragon/dist/annotorious.min.css';
 export default {
   data() {
     return {
-      anno: null // Inicialmente, la variable 'anno' se establece en null
+      isModalVisible: false,
+      anno: null,
+      showModalState: false,
     };
   },
+
   mounted() {
-    this.initializeOpenSeadragon();
+
+  
   },
+
   methods: {
     initializeOpenSeadragon() {
       var viewer = OpenSeadragon({
@@ -48,22 +53,24 @@ export default {
       // Asigna 'anno' a la instancia de Annotorious
       this.anno = Annotorious(viewer, options);
     },
-    rectangulo() {
-      if (this.anno) {
-        // Comprueba si 'anno' está definido antes de usarlo
-        this.anno.setDrawingTool('rect');
-      }
+
+    showModal() {
+      this.showModalState = true;
+
+      setTimeout(() => {
+      this.initializeOpenSeadragon();
+    }, 10);
+      
     },
-    circulo() {
-      // Lógica para el botón de círculo
-    }
-  }
-}
+    hideModal() {
+      this.showModalState = false;
+    },
+
+  },
+};
 </script>
 
 <style scoped>
-
-
 
 .flex {
   display: flex;
@@ -111,6 +118,5 @@ export default {
   border-radius:3px;
   font-size:14px;
 }
-
 
 </style>
